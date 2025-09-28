@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NTSE Mock Exam</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-2xl font-bold mb-4">NTSE Mock Exam</h1>
+  <div id="quiz" class="space-y-4"></div>
+  <div id="result" class="mt-4 font-bold text-blue-600"></div>
+  <script>
+  const questions = [
+    {q:"What is 7 × 8?", choices:["54","56","58","64"], a:1},
+    {q:"Capital of India?", choices:["Mumbai","Delhi","Chennai","Kolkata"], a:1}
+  ];
+  function renderQuiz(){
+    const container = document.getElementById('quiz');
+    container.innerHTML = questions.map((item,i)=>`
+      <div class="p-4 bg-white rounded shadow">
+        <p><b>Q${i+1}.</b> ${item.q}</p>
+        ${item.choices.map((c,j)=>`<label class="block"><input type="radio" name="q${i}" value="${j}"> ${c}</label>`).join('')}
+      </div>
+    `).join('') + `<button id="submitQuiz" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded">Submit</button>`;
+    document.getElementById('submitQuiz').addEventListener('click', scoreQuiz);
+  }
+  function scoreQuiz(){
+    let score=0;
+    questions.forEach((item,i)=>{
+      const sel = document.querySelector(\`input[name="q${i}"]:checked\`);
+      if(sel && parseInt(sel.value)===item.a) score++;
+    });
+    document.getElementById('result').innerHTML = \`Your score: \${score} / \${questions.length}\`;
+  }
+  renderQuiz();
+  </script>
+</body>
+</html>

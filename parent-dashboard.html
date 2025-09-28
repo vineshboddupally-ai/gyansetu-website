@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Parent Dashboard (Demo)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <h1 class="text-2xl font-bold mb-4">Parent Dashboard (Demo)</h1>
+  <div id="student-list" class="space-y-2"></div>
+  <button id="add-sample" class="bg-green-600 text-white px-4 py-2 rounded mt-4">Add Sample Student</button>
+  <script>
+  const STORAGE_KEY = 'gyan_parent_demo';
+  function load(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  function save(data){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+  function render(){
+    const list = load();
+    const cont = document.getElementById('student-list');
+    cont.innerHTML = list.map(s=>`
+      <div class="p-2 bg-white rounded shadow">
+        <b>${s.name}</b> — Marks: ${s.marks} — Fees: ${s.feesPaid ? 'Paid':'Pending'}
+      </div>`).join('') || '<p>No students yet</p>';
+  }
+  document.getElementById('add-sample').addEventListener('click', ()=>{
+    const data = load();
+    data.push({name:'Ramu', marks: Math.floor(Math.random()*100), feesPaid: Math.random()>0.5});
+    save(data);
+    render();
+  });
+  render();
+  </script>
+</body>
+</html>
